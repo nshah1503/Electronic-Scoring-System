@@ -1,0 +1,16 @@
+# Node.js frontend files
+node_modules/
+dist/
+
+# Python virtual environment
+venv/
+
+# OS or IDE files
+.DS_Store
+*.log
+
+# .env
+.env
+
+__pycache__/
+*.pyc
