@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>Loading...</div>
 </template>
 
@@ -31,6 +31,35 @@ export default {
         }
       } else {
         console.error("Auth0 client not initialized");
+      }
+    });
+  },
+};
+</script> -->
+
+
+<template>
+  <div>Loading...</div> <!-- Show loading state while processing -->
+</template>
+
+<script>
+import { onMounted } from "vue";
+import { useAuth0 } from "@auth0/auth0-vue";
+import { useRouter } from "vue-router";
+
+export default {
+  name: "Callback",
+  setup() {
+    const { handleRedirectCallback } = useAuth0();
+    const router = useRouter();
+
+    onMounted(async () => {
+      try {
+        await handleRedirectCallback(); // Handles the Auth0 redirect
+        router.push("/dashboard"); // Redirect to the dashboard after successful login
+      } catch (error) {
+        console.error("Error handling Auth0 callback:", error);
+        router.push("/"); // Redirect to login page on error
       }
     });
   },

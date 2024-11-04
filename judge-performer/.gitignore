@@ -27,4 +27,8 @@ coverage
 *.sln
 *.sw?
 
+
+judge-performer/.env
+backend/.env
+
 *.tsbuildinfo

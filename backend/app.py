@@ -5,8 +5,8 @@ from routes.judge_routes import judge_routes
 from routes.scoreboard_routes import scoreboard_routes
 
 app = Flask(__name__)
-# CORS(app)
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5174"]}})
+CORS(app)
+# CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5174"]}})
 # CORS(app, supports_credentials=True, headers="Content-Type")
 
 # Register blueprints

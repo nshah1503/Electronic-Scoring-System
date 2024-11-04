@@ -19,11 +19,10 @@ def update_performer_status():
     if not performer_id or not new_status:
         return jsonify({"error": "performerId and status are required"}), 400
 
-    
-    # Ensure performer_id is passed in correctly as the primary key
+    # Update performer status
     try:
         response = performers_table.update_item(
-            Key={"performerId": performer_id},  # Use the exact key schema name
+            Key={"performerId": performer_id},
             UpdateExpression="SET #s = :status",
             ExpressionAttributeNames={"#s": "status"},
             ExpressionAttributeValues={":status": new_status},
@@ -32,7 +31,6 @@ def update_performer_status():
         return jsonify(response.get("Attributes", {})), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
 
 @admin_routes.route("/performers", methods=["GET"])
 def get_performers():
@@ -42,10 +40,8 @@ def get_performers():
         return jsonify(performers), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-    
+
 @admin_routes.route('/judges', methods=['GET'])
-# @cross_origin()
 def get_judges():
     try:
         response = judges_table.scan()
@@ -53,9 +49,6 @@ def get_judges():
         return jsonify(judges), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-from flask import request, jsonify
-from config import performers_table  # Assuming you have a performers table
 
 @admin_routes.route('/add-performer', methods=['POST'])
 def add_performer():
@@ -79,3 +72,50 @@ def add_performer():
     performers_table.put_item(Item=new_performer)
 
     return jsonify(new_performer), 201
+
+# New route to update the active voting judge
+@admin_routes.route('/update-voting-judge', methods=['POST'])
+def update_voting_judge():
+    data = request.json
+    judge_id = data.get('judgeId')
+
+    if not judge_id:
+        return jsonify({"error": "judgeId is required"}), 400
+
+    # Reset isVotingNow to false for all judges
+    try:
+        # First, scan and get all judges
+        response = judges_table.scan()
+        for judge in response.get("Items", []):
+            judges_table.update_item(
+                Key={"judgeId": judge['judgeId']},
+                UpdateExpression="SET isVotingNow = :val",
+                ExpressionAttributeValues={":val": False}
+            )
+
+        # Set isVotingNow to true for the specified judge
+        judges_table.update_item(
+            Key={"judgeId": judge_id},
+            UpdateExpression="SET isVotingNow = :val",
+            ExpressionAttributeValues={":val": True}
+        )
+
+        return jsonify({"message": f"Judge {judge_id} is now the active voting judge"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# New route to get the active voting judge
+@admin_routes.route('/active-voting-judge', methods=['GET'])
+def get_active_voting_judge():
+    try:
+        response = judges_table.scan(
+            FilterExpression="isVotingNow = :val",
+            ExpressionAttributeValues={":val": True}
+        )
+        active_judges = response.get("Items", [])
+        if active_judges:
+            return jsonify({"judgeId": active_judges[0]["judgeId"], "name": active_judges[0]["name"]}), 200
+        else:
+            return jsonify({"message": "No active voting judge"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
