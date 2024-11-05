@@ -40,7 +40,7 @@ This setup ensures a smooth, organized scoring experience for events, with a use
 
 ## Architecture
 
-![Architecture Diagram][https://github.com/nshah1503/Electronic-Scoring-System/blob/main/diagram-export-11-4-2024-6_25_24-PM.svg]
+![diagram-export-11-4-2024-3_45_07-PM](https://github.com/user-attachments/assets/82133922-bdf7-4348-9b99-51e69cc988ff)
 
 This project follows a modular and scalable architecture with a **Vue.js** frontend, a **Flask** backend, and **AWS DynamoDB** for data persistence. The components are organized as follows:
 
