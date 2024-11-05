@@ -175,4 +175,9 @@ https://staging.dgg9ja99srxzq.amplifyapp.com/
 </p>
 <p align="center"><em>Final Scores (Bystander view)</em></p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0ccb9716-e80f-4903-8699-0b7782b9b28a" alt="Screenshot 2024-11-04 at 11 43 57 PM" width="800"/>
+</p>
+<p align="center"><em>Amplify Staging Web App</em></p>
+
 
