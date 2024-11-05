@@ -103,4 +103,4 @@ pip install -r requirements.txt
     npm run dev
 
 Link to webapp hosted on ec2:
-https://staging.dgg9ja99srxzq.amplifyapp.com/dashboard/judge1/
+https://staging.dgg9ja99srxzq.amplifyapp.com/
